@@ -5,6 +5,7 @@ var express = require('express'),
 
 api.get('/testUserController',userController.test);
 api.post('/register',userController.saveUser);
+api.post('/loginUser',userController.loginUser);
 
 
 module.exports = api; 

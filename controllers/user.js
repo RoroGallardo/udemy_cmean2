@@ -26,7 +26,6 @@ function saveUser(req,res){
         bcrypt.hash(params.password,null,null,function(err,hash) {
             user.password = hash;
             if(user.name != null && user.surname != null && user.email != null){
-                console,log("ueweaqliao");
                 user.save((err,userStored)=>{
                     if(err){
                         res.status(500).send({message : 'Error al guardar el usuario'});
@@ -49,7 +48,36 @@ function saveUser(req,res){
 
 }
 
+function loginUser(req, res){
+   var params  = req.body,
+       email   = params.email,
+       password = params.password;
+       console.log(params);
+    User.findOne({email: email},(err,user)=> {
+        if(err){
+            res.status(500).send({message : 'Error en la peticion'})
+        }else{
+            if(!user){
+                res.status(404).send({message :"El usuario no existe."});
+            }else{
+                bcrypt.compare(password,user.password,function(err,check){
+                   if(check){
+                      if(params.gethash){
+
+                      }else{
+                          res.status(200).send({user});
+                      }
+                   }else{
+                    res.status(404).send({message: "Contrañesa erronea"})
+                   }
+                });
+            }
+        }
+    })
+}
+
 module.exports = {
     test,
-    saveUser
+    saveUser,
+    loginUser
 };
